@@ -1,4 +1,4 @@
-# iconsaiTutorShowCase
+# tutor
 
 Página showcase do **Icons.ai · ai.tutor** — tutor educacional que opera dentro do Login Único.
 
@@ -19,8 +19,8 @@ npm run dev
 ## Deploy
 
 1. `npm run build`
-2. `rsync .next/standalone/ .next/static/ public/ root@<droplet>:/opt/iconsai-tutor-showcase/app/ --delete`
-3. systemd unit + Caddy `icon.iconsai.ai/tutor/*` → `127.0.0.1:3104/tutor/*`
+2. `rsync .next/standalone/ .next/static/ public/ root@<droplet>:/opt/tutor/app/ --delete`
+3. systemd unit `tutor.service` + Caddy `icon.iconsai.ai/tutor/*` → `127.0.0.1:3104/tutor/*`
 
 ## Cenas (5)
 
@@ -30,4 +30,4 @@ npm run dev
 4. Browser gallery — biblioteca de aulas
 5. Deck + certificado export
 
-CanopyIntro é compartilhado entre 6 ShowCases.
+CanopyIntro é compartilhado entre 6 showcases.
