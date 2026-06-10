@@ -186,8 +186,8 @@ function SceneFrame({ urlIndex, children }: { urlIndex: number; children: ReactN
   )
 }
 
-/** On-screen explanation aside (§6.4). Reads i18n strings by slide key. */
-function ExplainAside({ slideKey, lang }: { slideKey: string; lang: LangId }) {
+/** On-screen explanation aside (§6.4). 3-zone vertical layout: top (kicker+title), mid (body), bot (KPIs or slide index). */
+function ExplainAside({ slideKey, lang, slideIndex }: { slideKey: string; lang: LangId; slideIndex: number }) {
   const s = STRINGS[lang][slideKey]
   if (!s) return null
   const kpis: [string, string][] = []
@@ -195,21 +195,33 @@ function ExplainAside({ slideKey, lang }: { slideKey: string; lang: LangId }) {
     const v = s[`kpi${i}v`], k = s[`kpi${i}k`]
     if (v && k) kpis.push([v, k])
   }
+  const idx = String(slideIndex).padStart(2, '0')
   return (
     <aside className="ait-explain a d2">
-      {s.kicker && <span className="ait-explain-kicker">{s.kicker}</span>}
-      {s.title && <h3 className="ait-explain-title">{s.title}</h3>}
-      {s.body && <p className="ait-explain-body">{s.body}</p>}
-      {kpis.length > 0 && (
-        <div className="ait-explain-kpis">
-          {kpis.map(([v, k]) => (
-            <div key={k} className="ait-explain-kpi">
-              <span className="ait-explain-kpi-v">{v}</span>
-              <span className="ait-explain-kpi-k">{k}</span>
-            </div>
-          ))}
-        </div>
-      )}
+      <div className="ait-explain-top">
+        {s.kicker && <span className="ait-explain-kicker">{s.kicker}</span>}
+        {s.title && <h3 className="ait-explain-title">{s.title}</h3>}
+      </div>
+      <div className="ait-explain-mid">
+        {s.body && <p className="ait-explain-body">{s.body}</p>}
+      </div>
+      <div className="ait-explain-bot">
+        {kpis.length > 0 ? (
+          <div className="ait-explain-kpis">
+            {kpis.map(([v, k]) => (
+              <div key={k} className="ait-explain-kpi">
+                <span className="ait-explain-kpi-v">{v}</span>
+                <span className="ait-explain-kpi-k">{k}</span>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <>
+            <span className="ait-explain-rule" aria-hidden="true" />
+            <span className="ait-explain-idx" aria-hidden="true">{idx}</span>
+          </>
+        )}
+      </div>
     </aside>
   )
 }
@@ -368,7 +380,7 @@ function SlideLogin({ lang }: { lang: LangId }) {
           </div>
         </article>
       </SceneFrame>
-      <ExplainAside slideKey="s1" lang={lang} />
+      <ExplainAside slideKey="s1" lang={lang} slideIndex={1} />
     </Slide>
   )
 }
@@ -455,7 +467,7 @@ function SlideDashboard({ lang }: { lang: LangId }) {
           </div>
         </article>
       </SceneFrame>
-      <ExplainAside slideKey="s2" lang={lang} />
+      <ExplainAside slideKey="s2" lang={lang} slideIndex={2} />
     </Slide>
   )
 }
@@ -515,7 +527,7 @@ function SlideStory({ lang }: { lang: LangId }) {
           </div>
         </article>
       </SceneFrame>
-      <ExplainAside slideKey="s3" lang={lang} />
+      <ExplainAside slideKey="s3" lang={lang} slideIndex={3} />
     </Slide>
   )
 }
@@ -560,7 +572,7 @@ function SlideScript({ lang }: { lang: LangId }) {
           </div>
         </article>
       </SceneFrame>
-      <ExplainAside slideKey="s4" lang={lang} />
+      <ExplainAside slideKey="s4" lang={lang} slideIndex={4} />
     </Slide>
   )
 }
@@ -597,7 +609,7 @@ function SlidePrompt({ lang }: { lang: LangId }) {
           </div>
         </article>
       </SceneFrame>
-      <ExplainAside slideKey="s5" lang={lang} />
+      <ExplainAside slideKey="s5" lang={lang} slideIndex={5} />
     </Slide>
   )
 }
@@ -663,7 +675,7 @@ function SlideSimulation({ lang }: { lang: LangId }) {
           </div>
         </article>
       </SceneFrame>
-      <ExplainAside slideKey="s6" lang={lang} />
+      <ExplainAside slideKey="s6" lang={lang} slideIndex={6} />
     </Slide>
   )
 }
@@ -731,7 +743,7 @@ function SlideToolBuilder({ lang }: { lang: LangId }) {
           </div>
         </article>
       </SceneFrame>
-      <ExplainAside slideKey="s7" lang={lang} />
+      <ExplainAside slideKey="s7" lang={lang} slideIndex={7} />
     </Slide>
   )
 }
@@ -785,7 +797,7 @@ function SlideKaraoke({ lang }: { lang: LangId }) {
           </div>
         </article>
       </SceneFrame>
-      <ExplainAside slideKey="s8" lang={lang} />
+      <ExplainAside slideKey="s8" lang={lang} slideIndex={8} />
     </Slide>
   )
 }
@@ -833,7 +845,7 @@ function SlideExercise({ lang }: { lang: LangId }) {
           </div>
         </article>
       </SceneFrame>
-      <ExplainAside slideKey="s9" lang={lang} />
+      <ExplainAside slideKey="s9" lang={lang} slideIndex={9} />
     </Slide>
   )
 }
@@ -897,7 +909,7 @@ function SlidePublished({ lang }: { lang: LangId }) {
           </div>
         </article>
       </SceneFrame>
-      <ExplainAside slideKey="s10" lang={lang} />
+      <ExplainAside slideKey="s10" lang={lang} slideIndex={10} />
     </Slide>
   )
 }
@@ -958,7 +970,7 @@ function SlideRH({ lang }: { lang: LangId }) {
           </div>
         </article>
       </SceneFrame>
-      <ExplainAside slideKey="s11" lang={lang} />
+      <ExplainAside slideKey="s11" lang={lang} slideIndex={11} />
     </Slide>
   )
 }
