@@ -186,7 +186,7 @@ function SceneFrame({ urlIndex, children }: { urlIndex: number; children: ReactN
   )
 }
 
-/** On-screen explanation aside (§6.4). 3-zone vertical layout: top (kicker+title), mid (body), bot (KPIs or slide index). */
+/** On-screen explanation aside (§6.4). Centered on vertical midline, fills >75% of 1/3 column. */
 function ExplainAside({ slideKey, lang, slideIndex }: { slideKey: string; lang: LangId; slideIndex: number }) {
   const s = STRINGS[lang][slideKey]
   if (!s) return null
@@ -198,30 +198,21 @@ function ExplainAside({ slideKey, lang, slideIndex }: { slideKey: string; lang: 
   const idx = String(slideIndex).padStart(2, '0')
   return (
     <aside className="ait-explain a d2">
-      <div className="ait-explain-top">
-        {s.kicker && <span className="ait-explain-kicker">{s.kicker}</span>}
-        {s.title && <h3 className="ait-explain-title">{s.title}</h3>}
-      </div>
-      <div className="ait-explain-mid">
-        {s.body && <p className="ait-explain-body">{s.body}</p>}
-      </div>
-      <div className="ait-explain-bot">
-        {kpis.length > 0 ? (
-          <div className="ait-explain-kpis">
-            {kpis.map(([v, k]) => (
-              <div key={k} className="ait-explain-kpi">
-                <span className="ait-explain-kpi-v">{v}</span>
-                <span className="ait-explain-kpi-k">{k}</span>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <>
-            <span className="ait-explain-rule" aria-hidden="true" />
-            <span className="ait-explain-idx" aria-hidden="true">{idx}</span>
-          </>
-        )}
-      </div>
+      {s.kicker && <span className="ait-explain-kicker">{s.kicker}</span>}
+      {s.title && <h3 className="ait-explain-title">{s.title}</h3>}
+      <span className="ait-explain-rule" aria-hidden="true" />
+      {s.body && <p className="ait-explain-body">{s.body}</p>}
+      {kpis.length > 0 && (
+        <div className="ait-explain-kpis">
+          {kpis.map(([v, k]) => (
+            <div key={k} className="ait-explain-kpi">
+              <span className="ait-explain-kpi-v">{v}</span>
+              <span className="ait-explain-kpi-k">{k}</span>
+            </div>
+          ))}
+        </div>
+      )}
+      <span className="ait-explain-idx" aria-hidden="true">{idx}</span>
     </aside>
   )
 }

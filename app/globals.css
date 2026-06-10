@@ -717,39 +717,39 @@ body::after {
   -webkit-text-fill-color: transparent;
 }
 
-/* ── Cinema (scene wrappers) ── */
+/* ── Cinema (scene wrappers — 2/3, vertically centered on midline) ── */
 .ait-cinema {
-  display: grid;
-  grid-template-rows: auto auto 1fr;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   gap: 14px;
   padding: 24px 26px 18px;
   flex: 2 1 0%;
   min-width: 0;
   height: 100%;
+  border-right: 1px solid rgba(34,211,238,0.08);
 }
 
-/* ── Explain aside (§6.4 — 1/3 side column, content spread top-to-bottom) ── */
+/* ── Explain aside (§6.4 — 1/3 side column, centered on midline, fills >75%) ── */
 .ait-explain {
   flex: 1 1 0%;
   min-width: 0;
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  padding: 24px 20px;
+  justify-content: center;
+  gap: clamp(16px, 3vh, 32px);
+  padding: 20px 22px;
 }
-.ait-explain-top { display: flex; flex-direction: column; gap: 6px; }
-.ait-explain-mid { display: flex; flex-direction: column; gap: 8px; }
-.ait-explain-bot { display: flex; flex-direction: column; gap: 8px; margin-top: auto; }
-.ait-explain-kicker { font-family: var(--font-mono); font-size: clamp(0.7rem, 1vw, 0.85rem); font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--cyan); }
-.ait-explain-title { font-family: var(--font-display); font-size: clamp(1.4rem, 2.6vw, 2.2rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; color: var(--white); }
-.ait-explain-body { font-family: var(--font-body); font-size: clamp(0.92rem, 1.3vw, 1.15rem); line-height: 1.5; color: var(--gray); }
-.ait-explain-kpis { display: flex; gap: 20px; flex-wrap: wrap; }
-.ait-explain-kpi { display: flex; flex-direction: column; gap: 3px; }
-.ait-explain-kpi-v { font-family: var(--font-display); font-size: clamp(1.8rem, 3.2vw, 2.8rem); font-weight: 800; line-height: 1; color: var(--white); font-variant-numeric: tabular-nums; }
-.ait-explain-kpi-k { font-family: var(--font-mono); font-size: clamp(0.6rem, 0.8vw, 0.72rem); letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); }
-.ait-explain-rule { width: 32px; height: 1px; background: linear-gradient(90deg, var(--cyan), transparent); opacity: 0.4; }
-.ait-explain-idx { font-family: var(--font-mono); font-size: clamp(2.4rem, 4vw, 3.6rem); font-weight: 800; line-height: 1; color: var(--dim); letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
+.ait-explain-kicker { font-family: var(--font-mono); font-size: clamp(0.72rem, 1.1vw, 0.9rem); font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--cyan); }
+.ait-explain-title { font-family: var(--font-display); font-size: clamp(1.6rem, 3vw, 2.8rem); font-weight: 800; line-height: 1.08; letter-spacing: -0.02em; color: var(--white); }
+.ait-explain-body { font-family: var(--font-body); font-size: clamp(0.95rem, 1.4vw, 1.25rem); line-height: 1.55; color: var(--gray); }
+.ait-explain-kpis { display: flex; gap: clamp(16px, 2.5vw, 28px); flex-wrap: wrap; }
+.ait-explain-kpi { display: flex; flex-direction: column; gap: 4px; }
+.ait-explain-kpi-v { font-family: var(--font-display); font-size: clamp(2rem, 3.6vw, 3.2rem); font-weight: 800; line-height: 1; color: var(--white); font-variant-numeric: tabular-nums; }
+.ait-explain-kpi-k { font-family: var(--font-mono); font-size: clamp(0.6rem, 0.85vw, 0.75rem); letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); }
+.ait-explain-rule { width: 36px; height: 1px; background: linear-gradient(90deg, var(--cyan), transparent); opacity: 0.35; }
+.ait-explain-idx { font-family: var(--font-mono); font-size: clamp(2.8rem, 5vw, 4.2rem); font-weight: 800; line-height: 1; color: rgba(255,255,255,0.06); letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
 
 .ait-chrome {
   position: relative;
@@ -1273,14 +1273,13 @@ body::after {
   .reading-panel { top: auto; bottom: 5.5rem; left: 1rem; right: 1rem; width: auto; max-height: 50vh; }
 
   /* Explain aside mobile — context-first (above cinema) */
+  .ait-cinema { border-right: none; }
   .ait-explain { flex: 0 0 auto; order: -1; padding: 8px 12px; justify-content: flex-start; gap: 4px; }
-  .ait-explain-top, .ait-explain-mid, .ait-explain-bot { gap: 4px; }
-  .ait-explain-bot { margin-top: 0; flex-direction: row; align-items: center; gap: 12px; }
   .ait-explain-title { font-size: 1.05rem; }
   .ait-explain-body { font-size: 0.82rem; }
   .ait-explain-kpis { gap: 14px; }
   .ait-explain-kpi-v { font-size: 1.3rem; }
-  .ait-explain-idx { font-size: 1.3rem; }
+  .ait-explain-idx { display: none; }
   .ait-explain-rule { display: none; }
 
   /* Scene-specific mobile */
@@ -1318,11 +1317,11 @@ body::after {
   .slide-nav__btn svg { width: 16px; height: 16px; }
   .slide-foot .logo-foot { font-size: .8rem; }
   .slide-foot__legal { font-size: .5rem; }
-  .ait-explain { padding: 14px 16px; }
-  .ait-explain-title { font-size: clamp(1.1rem, 2vw, 1.5rem); }
-  .ait-explain-body { font-size: clamp(0.82rem, 1.1vw, 0.95rem); }
-  .ait-explain-kpi-v { font-size: clamp(1.4rem, 2.5vw, 2rem); }
-  .ait-explain-idx { font-size: clamp(1.8rem, 3vw, 2.4rem); }
+  .ait-explain { padding: 14px 16px; gap: clamp(10px, 2vh, 18px); }
+  .ait-explain-title { font-size: clamp(1.15rem, 2.2vw, 1.6rem); }
+  .ait-explain-body { font-size: clamp(0.84rem, 1.15vw, 1rem); }
+  .ait-explain-kpi-v { font-size: clamp(1.5rem, 2.8vw, 2.2rem); }
+  .ait-explain-idx { font-size: clamp(2rem, 3.5vw, 3rem); }
 }
 
 /* ── PDF Document (hidden on screen, revealed by @media print) ── */
