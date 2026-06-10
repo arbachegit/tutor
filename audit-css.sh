@@ -18,35 +18,55 @@ css_block_has(){
 
 # ═══ 1. GLOBALS.CSS ═══
 
-# F1: slide-inner/slide-stage NÃO pode ter align-items:center
-css_block_has '\.slide-inner' 'align-items:\s*center' "$CSS" \
-  && fail F1 ".slide-inner tem align-items:center (deve ser stretch)"
+# F1: .slide-stage NÃO pode ter align-items:center (deve ser stretch)
+css_block_has '\.slide-stage' 'align-items:[ ]*center' "$CSS" \
+  && fail F1 ".slide-stage tem align-items:center (deve ser stretch)"
 
-# F2: slide-fit/slide-content NÃO pode ter align-items:center
-css_block_has '\.slide-fit' 'align-items:\s*center' "$CSS" \
-  && fail F2 ".slide-fit tem align-items:center"
+# F1b: .slide-stage DEVE ter align-items:stretch
+css_block_has '\.slide-stage' 'align-items:[ ]*stretch' "$CSS" \
+  || fail F1b ".slide-stage sem align-items:stretch"
+
+# F2: .slide-content NÃO pode ter align-items:center
+css_block_has '\.slide-content' 'align-items:[ ]*center' "$CSS" \
+  && fail F2 ".slide-content tem align-items:center (deve ser stretch)"
+
+# F3: classe .slide-fit NÃO deve existir (nome obsoleto)
+grep -qE '\.slide-fit\b' "$CSS" 2>/dev/null \
+  && fail F3 "classe .slide-fit encontrada (usar .slide-content)"
 
 # F4: sem max-width em containers de slide
-css_block_has '\.slide-fit' 'max-width' "$CSS" \
+css_block_has '\.slide-content' 'max-width' "$CSS" \
   && fail F4 "max-width em container de slide (proibido)"
 
-# F8: .slide-fit DEVE ter height:100%
-css_block_has '\.slide-fit' 'height:.*100%' "$CSS" \
-  || fail F8 ".slide-fit sem height:100%"
+# F8: .slide-content DEVE ter height:100%
+css_block_has '\.slide-content' 'height:.*100%' "$CSS" \
+  || fail F8 ".slide-content sem height:100%"
 
-# F13: slide-inner NAO pode ter justify-content:center
-css_block_has '\.slide-inner' 'justify-content:\s*center' "$CSS" \
-  && fail F13 ".slide-inner tem justify-content:center"
+# F9: .slide-content DEVE ter align-items:stretch
+css_block_has '\.slide-content' 'align-items:[ ]*stretch' "$CSS" \
+  || fail F9 ".slide-content sem align-items:stretch"
 
-# F15: clamp() obrigatorio nas faixas (nao max()) — check .slide-inner padding
-grep -q 'slide-inner' "$CSS" && {
-  css_block_has '\.slide-inner' 'padding.*max[(]' "$CSS" \
-    && fail F15 "Usando max() em vez de clamp() no padding das faixas"
-}
+# F13: .slide-band NAO pode ter justify-content:center ou align-items:center
+css_block_has '\.slide-band' 'justify-content:[ ]*center' "$CSS" \
+  && fail F13 ".slide-band tem justify-content:center"
+css_block_has '\.slide-band' 'align-items:[ ]*center' "$CSS" \
+  && fail F13 ".slide-band tem align-items:center"
+
+# F14: .slide-stage NÃO pode ter height:100% (deve ser flex:1; min-height:0)
+css_block_has '\.slide-stage' 'height:[ ]*100%' "$CSS" \
+  && fail F14 ".slide-stage tem height:100% (deve ser flex:1; min-height:0)"
+
+# F15: clamp() obrigatorio nas faixas (nao max()) — check .slide-band padding
+css_block_has '\.slide-band' 'padding.*max[(]' "$CSS" \
+  && fail F15 "Usando max() em vez de clamp() no padding das faixas"
 
 # F16: setas <= 44px
 grep -qE '\.slide-nav__btn\b[^}]*(width|height):\s*(4[5-9]|[5-9][0-9]|[0-9]{3,})px' "$CSS" 2>/dev/null \
   && fail F16 "slide-nav__btn > 44px"
+
+# F19: classe .slide-fit no SlideFrame (nome obsoleto — deve ser .slide-content)
+grep -rlE 'slide-fit' components/ 2>/dev/null | grep -q . \
+  && fail F19 "classe .slide-fit encontrada em componentes (usar .slide-content)"
 
 # F22: faixas opacas existem (body::before e body::after com background)
 grep -q 'body::before' "$CSS" 2>/dev/null || fail F22 "body::before ausente"

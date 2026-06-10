@@ -4,6 +4,7 @@ import { useState, type CSSProperties, type ReactNode } from 'react'
 import { SlideEngine, useSlideContext } from '@/components/SlideEngine'
 import { Slide } from '@/components/Slide'
 import { AudioController } from '@/components/AudioController'
+import { PdfDocument } from '@/components/pdf/PdfDocument'
 import { STRINGS, type LangId } from '@/i18n/strings'
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -267,23 +268,23 @@ function Chrome({ lang, setLang }: { lang: LangId; setLang: (l: LangId) => void 
 function SlideOpening({ lang }: { lang: LangId }) {
   const s = STRINGS[lang].s0 ?? {}
   return (
-    <Slide index={0} variant="title">
+    <Slide index={0}>
       <section className="ait-opening" aria-label="Opening">
         <div className="ait-op-kicker a d1">
           <span className="ait-op-dot" /> {s.kicker ?? 'AI.TUTOR'}
         </div>
         <h1 className="ait-op-wordmark a d2">ai.tutor</h1>
-        <div className="ait-op-quotes" aria-hidden="true">
-          <p className="ait-op-q a d3">
+        <div className="ait-op-quotes a d3" aria-hidden="true">
+          <p className="ait-op-q ait-op-q--1">
             <span className="tw">{s.q1}</span>
           </p>
-          <p className="ait-op-q a d4">
+          <p className="ait-op-q ait-op-q--2">
             <span className="tw">{s.q2}</span>
           </p>
-          <p className="ait-op-q a d5">
+          <p className="ait-op-q ait-op-q--3">
             <span className="tw">{s.q3}</span>
           </p>
-          <p className="ait-op-q a d6">
+          <p className="ait-op-q ait-op-q--4">
             <span className="tw">{s.q4}</span>
           </p>
         </div>
@@ -304,7 +305,7 @@ function SlideOpening({ lang }: { lang: LangId }) {
 
 function SlideLogin() {
   return (
-    <Slide index={1} variant="content">
+    <Slide index={1}>
       <SceneFrame urlIndex={0}>
         <article className="ait-scene ait-scene--s1 a">
           <Topbar role="student" name="ai.tutor · Login Único" pillKind="cy" pillText="learn.iconsai.ai" />
@@ -352,7 +353,7 @@ function SlideDashboard() {
   const card = STUDENT_CARDS.find((c) => c.id === selected) ?? STUDENT_CARDS[0]
   const detail = STUDENT_CARD_DETAILS[selected]
   return (
-    <Slide index={2} variant="content">
+    <Slide index={2}>
       <SceneFrame urlIndex={1}>
         <article className="ait-scene ait-scene--s2 a">
           <Topbar role="student" name="ai.tutor · Minhas trilhas" pillKind="cy" pillText="ana.ribeiro · MagisaTech" />
@@ -435,7 +436,7 @@ function SlideDashboard() {
 
 function SlideStory() {
   return (
-    <Slide index={3} variant="content">
+    <Slide index={3}>
       <SceneFrame urlIndex={2}>
         <article className="ait-scene ait-scene--s3 a">
           <Topbar role="student" name="ai.tutor · Conte sua história" pillKind="pr" pillText="passo 1 / 4 · gravando" />
@@ -494,7 +495,7 @@ function SlideStory() {
 
 function SlideScript() {
   return (
-    <Slide index={4} variant="content">
+    <Slide index={4}>
       <SceneFrame urlIndex={3}>
         <article className="ait-scene ait-scene--s4 a">
           <Topbar role="student" name="ai.tutor · Gerando script" pillKind="pr" pillText="passo 2 / 4 · estruturando" />
@@ -538,7 +539,7 @@ function SlideScript() {
 
 function SlidePrompt() {
   return (
-    <Slide index={5} variant="content">
+    <Slide index={5}>
       <SceneFrame urlIndex={4}>
         <article className="ait-scene ait-scene--s5 a">
           <Topbar role="student" name="ai.tutor · System prompt" pillKind="pr" pillText="passo 3 / 4 · promptando" />
@@ -574,7 +575,7 @@ function SlidePrompt() {
 
 function SlideSimulation() {
   return (
-    <Slide index={6} variant="content">
+    <Slide index={6}>
       <SceneFrame urlIndex={5}>
         <article className="ait-scene ait-scene--s6 a">
           <Topbar role="student" name="ai.tutor · Simulação" pillKind="pr" pillText="passo 4 / 4 · testando antes de publicar" />
@@ -639,7 +640,7 @@ function SlideSimulation() {
 
 function SlideToolBuilder() {
   return (
-    <Slide index={7} variant="content">
+    <Slide index={7}>
       <SceneFrame urlIndex={6}>
         <article className="ait-scene ait-scene--s7 a">
           <Topbar role="student" name="ai.tutor · Tool builder" pillKind="cy" pillText="no-code · drag-drop" />
@@ -706,7 +707,7 @@ function SlideToolBuilder() {
 
 function SlideKaraoke() {
   return (
-    <Slide index={8} variant="content">
+    <Slide index={8}>
       <SceneFrame urlIndex={7}>
         <article className="ait-scene ait-scene--s8 a">
           <Topbar role="student" name="modo treinamento · karaokê" pillKind="pr" pillText="Tutor ai.t lendo em voz" />
@@ -759,7 +760,7 @@ function SlideKaraoke() {
 
 function SlideExercise() {
   return (
-    <Slide index={9} variant="content">
+    <Slide index={9}>
       <SceneFrame urlIndex={8}>
         <article className="ait-scene ait-scene--s9 a">
           <Topbar role="student" name="exercício · score do lead" pillKind="cy" pillText="Veredito por Python" />
@@ -806,7 +807,7 @@ function SlideExercise() {
 
 function SlidePublished() {
   return (
-    <Slide index={10} variant="content">
+    <Slide index={10}>
       <SceneFrame urlIndex={9}>
         <article className="ait-scene ait-scene--s10 a">
           <Topbar role="student" name="ai.tutor · aplicação publicada" pillKind="gn" pillText="ao vivo · em produção" />
@@ -869,7 +870,7 @@ function SlidePublished() {
 
 function SlideRH() {
   return (
-    <Slide index={11} variant="content">
+    <Slide index={11}>
       <SceneFrame urlIndex={10}>
         <article className="ait-scene ait-scene--s11 a">
           <Topbar role="corp" name="MagisaTech · RH" pillKind="or" pillText="6 colaboradores · apps personalizadas" />
@@ -930,7 +931,7 @@ function SlideRH() {
 function SlideClosing({ lang }: { lang: LangId }) {
   const s = STRINGS[lang].s12 ?? {}
   return (
-    <Slide index={12} variant="title">
+    <Slide index={12}>
       <div className="ait-closing">
         <h2 className="ait-closing-title a d1">{s.title ?? 'Obrigado.'}</h2>
         <div className="a d2">
@@ -954,22 +955,25 @@ export default function ShowcasePage() {
   const [lang, setLang] = useState<LangId>('pt-BR')
 
   return (
-    <SlideEngine totalSlides={TOTAL_SLIDES}>
-      <Chrome lang={lang} setLang={setLang} />
+    <>
+      <SlideEngine totalSlides={TOTAL_SLIDES}>
+        <Chrome lang={lang} setLang={setLang} />
 
-      <SlideOpening lang={lang} />
-      <SlideLogin />
-      <SlideDashboard />
-      <SlideStory />
-      <SlideScript />
-      <SlidePrompt />
-      <SlideSimulation />
-      <SlideToolBuilder />
-      <SlideKaraoke />
-      <SlideExercise />
-      <SlidePublished />
-      <SlideRH />
-      <SlideClosing lang={lang} />
-    </SlideEngine>
+        <SlideOpening lang={lang} />
+        <SlideLogin />
+        <SlideDashboard />
+        <SlideStory />
+        <SlideScript />
+        <SlidePrompt />
+        <SlideSimulation />
+        <SlideToolBuilder />
+        <SlideKaraoke />
+        <SlideExercise />
+        <SlidePublished />
+        <SlideRH />
+        <SlideClosing lang={lang} />
+      </SlideEngine>
+      <PdfDocument lang={lang} />
+    </>
   )
 }
