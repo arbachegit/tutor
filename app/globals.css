@@ -723,9 +723,28 @@ body::after {
   grid-template-rows: auto auto 1fr;
   gap: 14px;
   padding: 24px 26px 18px;
-  width: 100%;
+  flex: 68 1 0%;
+  min-width: 0;
   height: 100%;
 }
+
+/* ── Explain aside (§6.4 — on-screen explanation per slide) ── */
+.ait-explain {
+  flex: 32 1 0%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 14px;
+  padding: 24px 20px;
+}
+.ait-explain-kicker { font-family: var(--font-mono); font-size: 0.68rem; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--cyan); }
+.ait-explain-title { font-family: var(--font-display); font-size: clamp(1.1rem, 2vw, 1.5rem); font-weight: 800; line-height: 1.15; letter-spacing: -0.02em; color: var(--white); }
+.ait-explain-body { font-family: var(--font-body); font-size: clamp(0.82rem, 1.1vw, 0.95rem); line-height: 1.6; color: var(--gray); max-width: 36ch; }
+.ait-explain-kpis { display: flex; gap: 16px; flex-wrap: wrap; }
+.ait-explain-kpi { display: flex; flex-direction: column; gap: 2px; }
+.ait-explain-kpi-v { font-family: var(--font-display); font-size: clamp(1.4rem, 2.5vw, 2rem); font-weight: 800; line-height: 1; color: var(--white); font-variant-numeric: tabular-nums; }
+.ait-explain-kpi-k { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); }
 
 .ait-chrome {
   position: relative;
@@ -1248,6 +1267,13 @@ body::after {
   .reading-btn, .speaker-btn { width: 40px; height: 40px; }
   .reading-panel { top: auto; bottom: 5.5rem; left: 1rem; right: 1rem; width: auto; max-height: 50vh; }
 
+  /* Explain aside mobile — context-first (above cinema) */
+  .ait-explain { flex: 0 0 auto; order: -1; padding: 8px 12px; gap: 8px; }
+  .ait-explain-title { font-size: 1rem; }
+  .ait-explain-body { font-size: 0.78rem; max-width: none; }
+  .ait-explain-kpis { gap: 12px; }
+  .ait-explain-kpi-v { font-size: 1.2rem; }
+
   /* Scene-specific mobile */
   .ait-story { grid-template-columns: 1fr !important; }
   .ait-story-left { padding: 14px; }
@@ -1283,6 +1309,9 @@ body::after {
   .slide-nav__btn svg { width: 16px; height: 16px; }
   .slide-foot .logo-foot { font-size: .8rem; }
   .slide-foot__legal { font-size: .5rem; }
+  .ait-explain { padding: 12px 14px; gap: 8px; }
+  .ait-explain-title { font-size: clamp(0.95rem, 1.5vw, 1.15rem); }
+  .ait-explain-body { font-size: 0.8rem; }
 }
 
 /* ── PDF Document (hidden on screen, revealed by @media print) ── */
@@ -1332,9 +1361,10 @@ body::after {
   color: #14181f; margin: 0 0 20px; line-height: 1.2;
 }
 .pdf-section-body {
-  font-size: 15px; line-height: 1.75; color: #374151; margin: 0;
+  font-size: 15px; line-height: 1.75; color: #374151; margin: 0 0 12px;
   max-width: 60ch;
 }
+.pdf-section-body:last-child { margin-bottom: 0; }
 
 .pdf-closing {
   background: #06080d; color: #f0f0f0;

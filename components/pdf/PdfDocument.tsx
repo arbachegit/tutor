@@ -5,12 +5,12 @@ import type { LangId } from '@/i18n/strings'
 const SECTIONS: Record<LangId, {
   docType: string
   coverTag: string
-  s1: { t: string; p: string }
-  s2: { t: string; p: string }
-  s3: { t: string; p: string }
-  s4: { t: string; p: string }
-  s5: { t: string; p: string }
-  s6: { t: string; p: string }
+  s1: { t: string; p: string[] }
+  s2: { t: string; p: string[] }
+  s3: { t: string; p: string[] }
+  s4: { t: string; p: string[] }
+  s5: { t: string; p: string[] }
+  s6: { t: string; p: string[] }
   closing: { thanks: string; available: string }
 }> = {
   'pt-BR': {
@@ -18,27 +18,45 @@ const SECTIONS: Record<LangId, {
     coverTag: 'Construtor de apps de IA por voz',
     s1: {
       t: 'Login unico e Dashboard',
-      p: 'O ai.tutor opera sobre o Identity Hub da iconsai: CPF + SMS OTP via Infobip, sem senha, sem cadastro duplicado. O dashboard apresenta oito areas de conhecimento com progresso individual. O destaque e a trilha "IA: construir minha aplicacao", onde cada colaborador conta sua historia de trabalho e sai com um app de IA publicado.',
+      p: [
+        'O ai.tutor opera sobre o Identity Hub da iconsai: CPF + SMS OTP via Infobip, sem senha, sem cadastro duplicado. O dashboard apresenta oito areas de conhecimento com progresso individual.',
+        'O destaque e a trilha "IA: construir minha aplicacao", onde cada colaborador conta sua historia de trabalho e sai com um app de IA publicado. A experiencia de login unificado elimina friccao: um unico acesso navega tutor, stats, python e todos os apps do ecossistema.',
+      ],
     },
     s2: {
       t: 'Storytelling por voz e Script IA',
-      p: 'O colaborador grava um relato natural sobre seu trabalho e o problema que quer resolver. A IA transcreve em tempo real com Claude Sonnet 4.6 e extrai palavras-chave. Do audio nasce um script estruturado: nome do agente, ferramentas, fluxo de conversa e guardrails. Tudo visivel para revisao antes de avancar.',
+      p: [
+        'O colaborador grava um relato natural sobre seu trabalho e o problema que quer resolver. A IA transcreve em tempo real com Claude Sonnet 4.6 e extrai palavras-chave automaticamente.',
+        'Do audio nasce um script estruturado: nome do agente, ferramentas, fluxo de conversa e guardrails. Tudo visivel para revisao antes de avancar. A abordagem por voz reduz a barreira de entrada para colaboradores sem experiencia tecnica.',
+      ],
     },
     s3: {
       t: 'System Prompt e Simulacao',
-      p: 'O script gera um system prompt completo (modelo Claude Sonnet 4.6, temperatura 0.3). O aluno pode editar antes de publicar. A simulacao coloca o agente contra um lead simulado pela IA, com score ao vivo e controles de temperatura, persona e profundidade tecnica.',
+      p: [
+        'O script gera um system prompt completo (modelo Claude Sonnet 4.6, temperatura 0.3). O aluno pode editar antes de publicar, mantendo controle total sobre o comportamento do agente.',
+        'A simulacao coloca o agente contra um lead simulado pela IA, com score ao vivo e controles de temperatura, persona e profundidade tecnica. O ciclo aprovar-ou-refinar garante que nenhum agente vai a producao sem validacao.',
+      ],
     },
     s4: {
       t: 'Tool Builder e Deploy',
-      p: 'O fluxo visual mostra cinco blocos no-code: input, CRM lookup, Claude, score Python e output. Cada conexao aparece ao vivo. O deploy gera uma URL real em apps.iconsai.ai, pronta para uso pela empresa.',
+      p: [
+        'O fluxo visual mostra cinco blocos no-code: input, CRM lookup, Claude, score Python e output. Cada conexao aparece ao vivo, permitindo ao colaborador entender o pipeline de ponta a ponta.',
+        'O deploy gera uma URL real em apps.iconsai.ai, pronta para uso pela empresa. Em menos de tres segundos a aplicacao esta disponivel com metricas de uso integradas.',
+      ],
     },
     s5: {
       t: 'Treinamento e Exercicios',
-      p: 'Modo karaoke word-by-word com TTS da OpenAI: cada palavra acende no ritmo da leitura. Tres niveis de profundidade (simples, tecnico, exercicio). Exercicios com veredito por Python: o grader.py roda os testes e devolve pass/fail com tempo de execucao.',
+      p: [
+        'Modo karaoke word-by-word com TTS da OpenAI: cada palavra acende no ritmo da leitura. Tres niveis de profundidade (simples, tecnico, exercicio) adaptam o conteudo ao perfil do colaborador.',
+        'Exercicios com veredito por Python: o grader.py roda os testes e devolve pass/fail com tempo de execucao. O LLM nunca avalia — apenas humaniza a resposta. Isso garante determinismo e auditabilidade no resultado.',
+      ],
     },
     s6: {
       t: 'Publicacao e Visao RH',
-      p: 'O climax: a aplicacao e publicada com URL real, metricas de uso (conversas, leads qualificados, satisfacao) e versao. A visao RH mostra a trilha completa da empresa com progresso por colaborador e apps publicadas.',
+      p: [
+        'O climax: a aplicacao e publicada com URL real, metricas de uso (conversas, leads qualificados, satisfacao) e versao. O colaborador sai do treinamento com uma ferramenta funcional para seu dia a dia.',
+        'A visao RH mostra a trilha completa da empresa com progresso por colaborador, apps publicadas e desempenho individual. A gestao de pessoas ganha visibilidade sobre o retorno concreto do investimento em capacitacao.',
+      ],
     },
     closing: {
       thanks: 'Obrigado.',
@@ -50,27 +68,45 @@ const SECTIONS: Record<LangId, {
     coverTag: 'Construtor de apps de IA por voz',
     s1: {
       t: 'Login unico e Dashboard',
-      p: 'O ai.tutor opera sobre o Identity Hub da iconsai: CPF + SMS OTP via Infobip, sem palavra-passe, sem registo duplicado. O dashboard apresenta oito areas de conhecimento com progresso individual. O destaque e a trilha "IA: construir a minha aplicacao", onde cada colaborador conta a sua historia de trabalho e sai com uma app de IA publicada.',
+      p: [
+        'O ai.tutor opera sobre o Identity Hub da iconsai: CPF + SMS OTP via Infobip, sem palavra-passe, sem registo duplicado. O dashboard apresenta oito areas de conhecimento com progresso individual.',
+        'O destaque e a trilha "IA: construir a minha aplicacao", onde cada colaborador conta a sua historia de trabalho e sai com uma app de IA publicada. A experiencia de login unificado elimina friccao: um unico acesso navega tutor, stats, python e todas as apps do ecossistema.',
+      ],
     },
     s2: {
       t: 'Storytelling por voz e Script IA',
-      p: 'O colaborador grava um relato natural sobre o seu trabalho e o problema que pretende resolver. A IA transcreve em tempo real com Claude Sonnet 4.6 e extrai palavras-chave. Do audio nasce um guiao estruturado: nome do agente, ferramentas, fluxo de conversa e guardrails. Tudo visivel para revisao antes de avancar.',
+      p: [
+        'O colaborador grava um relato natural sobre o seu trabalho e o problema que pretende resolver. A IA transcreve em tempo real com Claude Sonnet 4.6 e extrai palavras-chave automaticamente.',
+        'Do audio nasce um guiao estruturado: nome do agente, ferramentas, fluxo de conversa e guardrails. Tudo visivel para revisao antes de avancar. A abordagem por voz reduz a barreira de entrada para colaboradores sem experiencia tecnica.',
+      ],
     },
     s3: {
       t: 'System Prompt e Simulacao',
-      p: 'O guiao gera um system prompt completo (modelo Claude Sonnet 4.6, temperatura 0.3). O aluno pode editar antes de publicar. A simulacao coloca o agente contra um lead simulado pela IA, com score ao vivo e controlos de temperatura, persona e profundidade tecnica.',
+      p: [
+        'O guiao gera um system prompt completo (modelo Claude Sonnet 4.6, temperatura 0.3). O aluno pode editar antes de publicar, mantendo controlo total sobre o comportamento do agente.',
+        'A simulacao coloca o agente contra um lead simulado pela IA, com score ao vivo e controlos de temperatura, persona e profundidade tecnica. O ciclo aprovar-ou-refinar garante que nenhum agente vai a producao sem validacao.',
+      ],
     },
     s4: {
       t: 'Tool Builder e Deploy',
-      p: 'O fluxo visual mostra cinco blocos no-code: input, CRM lookup, Claude, score Python e output. Cada ligacao aparece ao vivo. O deploy gera um URL real em apps.iconsai.ai, pronto para utilizacao pela empresa.',
+      p: [
+        'O fluxo visual mostra cinco blocos no-code: input, CRM lookup, Claude, score Python e output. Cada ligacao aparece ao vivo, permitindo ao colaborador compreender o pipeline de ponta a ponta.',
+        'O deploy gera um URL real em apps.iconsai.ai, pronto para utilizacao pela empresa. Em menos de tres segundos a aplicacao esta disponivel com metricas de utilizacao integradas.',
+      ],
     },
     s5: {
       t: 'Formacao e Exercicios',
-      p: 'Modo karaoke word-by-word com TTS da OpenAI: cada palavra acende ao ritmo da leitura. Tres niveis de profundidade (simples, tecnico, exercicio). Exercicios com veredito por Python: o grader.py executa os testes e devolve pass/fail com tempo de execucao.',
+      p: [
+        'Modo karaoke word-by-word com TTS da OpenAI: cada palavra acende ao ritmo da leitura. Tres niveis de profundidade (simples, tecnico, exercicio) adaptam o conteudo ao perfil do colaborador.',
+        'Exercicios com veredito por Python: o grader.py executa os testes e devolve pass/fail com tempo de execucao. O LLM nunca avalia — apenas humaniza a resposta. Isto garante determinismo e auditabilidade no resultado.',
+      ],
     },
     s6: {
       t: 'Publicacao e Visao RH',
-      p: 'O climax: a aplicacao e publicada com URL real, metricas de utilizacao (conversas, leads qualificados, satisfacao) e versao. A visao RH mostra a trilha completa da empresa com progresso por colaborador e apps publicadas.',
+      p: [
+        'O climax: a aplicacao e publicada com URL real, metricas de utilizacao (conversas, leads qualificados, satisfacao) e versao. O colaborador sai da formacao com uma ferramenta funcional para o seu dia a dia.',
+        'A visao RH mostra a trilha completa da empresa com progresso por colaborador, apps publicadas e desempenho individual. A gestao de pessoas ganha visibilidade sobre o retorno concreto do investimento em capacitacao.',
+      ],
     },
     closing: {
       thanks: 'Obrigado.',
@@ -82,27 +118,45 @@ const SECTIONS: Record<LangId, {
     coverTag: 'AI app builder by voice',
     s1: {
       t: 'Single Sign-On and Dashboard',
-      p: 'ai.tutor runs on the iconsai Identity Hub: CPF + SMS OTP via Infobip, no password, no duplicate registration. The dashboard shows eight knowledge areas with individual progress. The highlight is the "AI: build my application" track, where each employee tells their work story and walks out with a published AI app.',
+      p: [
+        'ai.tutor runs on the iconsai Identity Hub: CPF + SMS OTP via Infobip, no password, no duplicate registration. The dashboard shows eight knowledge areas with individual progress.',
+        'The highlight is the "AI: build my application" track, where each employee tells their work story and walks out with a published AI app. The unified login experience eliminates friction: a single sign-on navigates tutor, stats, python and every app in the ecosystem.',
+      ],
     },
     s2: {
       t: 'Voice Storytelling and AI Script',
-      p: 'The employee records a natural account of their work and the problem they want to solve. The AI transcribes in real time with Claude Sonnet 4.6 and extracts keywords. From the audio, a structured script is born: agent name, tools, conversation flow, and guardrails. Everything visible for review before moving on.',
+      p: [
+        'The employee records a natural account of their work and the problem they want to solve. The AI transcribes in real time with Claude Sonnet 4.6 and automatically extracts keywords.',
+        'From the audio, a structured script is born: agent name, tools, conversation flow, and guardrails. Everything visible for review before moving on. The voice-first approach lowers the barrier to entry for non-technical employees.',
+      ],
     },
     s3: {
       t: 'System Prompt and Simulation',
-      p: 'The script generates a complete system prompt (Claude Sonnet 4.6, temperature 0.3). The student can edit before publishing. The simulation pits the agent against an AI-simulated lead, with live scoring and controls for temperature, persona, and technical depth.',
+      p: [
+        'The script generates a complete system prompt (Claude Sonnet 4.6, temperature 0.3). The student can edit before publishing, keeping full control over the agent behavior.',
+        'The simulation pits the agent against an AI-simulated lead, with live scoring and controls for temperature, persona, and technical depth. The approve-or-refine cycle ensures no agent goes to production without validation.',
+      ],
     },
     s4: {
       t: 'Tool Builder and Deploy',
-      p: 'The visual flow shows five no-code blocks: input, CRM lookup, Claude, Python score, and output. Each connection appears live. Deployment generates a real URL at apps.iconsai.ai, ready for use by the company.',
+      p: [
+        'The visual flow shows five no-code blocks: input, CRM lookup, Claude, Python score, and output. Each connection appears live, letting the employee understand the full pipeline end to end.',
+        'Deployment generates a real URL at apps.iconsai.ai, ready for use by the company. In under three seconds the application is live with integrated usage metrics.',
+      ],
     },
     s5: {
       t: 'Training and Exercises',
-      p: 'Karaoke mode with word-by-word TTS from OpenAI: each word lights up in reading rhythm. Three depth levels (simple, technical, exercise). Exercises with Python verdicts: grader.py runs the tests and returns pass/fail with execution time.',
+      p: [
+        'Karaoke mode with word-by-word TTS from OpenAI: each word lights up in reading rhythm. Three depth levels (simple, technical, exercise) adapt content to the employee profile.',
+        'Exercises with Python verdicts: grader.py runs the tests and returns pass/fail with execution time. The LLM never evaluates — it only humanizes the response. This guarantees determinism and auditability in the result.',
+      ],
     },
     s6: {
       t: 'Publishing and HR View',
-      p: 'The climax: the application is published with a real URL, usage metrics (conversations, qualified leads, satisfaction), and version. The HR view shows the complete company track with per-employee progress and published apps.',
+      p: [
+        'The climax: the application is published with a real URL, usage metrics (conversations, qualified leads, satisfaction), and version. The employee walks out of training with a working tool for their daily routine.',
+        'The HR view shows the complete company track with per-employee progress, published apps, and individual performance. People management gains visibility into the concrete return on training investment.',
+      ],
     },
     closing: {
       thanks: 'Thank you.',
@@ -143,7 +197,9 @@ export function PdfDocument({ lang }: { lang: LangId }) {
             <span className="pdf-head-num">{String(i + 2).padStart(2, '0')}</span>
           </div>
           <h2 className="pdf-section-title">{sec.t}</h2>
-          <p className="pdf-section-body">{sec.p}</p>
+          {sec.p.map((paragraph, j) => (
+            <p key={j} className="pdf-section-body">{paragraph}</p>
+          ))}
         </div>
       ))}
 

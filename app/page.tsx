@@ -186,6 +186,34 @@ function SceneFrame({ urlIndex, children }: { urlIndex: number; children: ReactN
   )
 }
 
+/** On-screen explanation aside (§6.4). Reads i18n strings by slide key. */
+function ExplainAside({ slideKey, lang }: { slideKey: string; lang: LangId }) {
+  const s = STRINGS[lang][slideKey]
+  if (!s) return null
+  const kpis: [string, string][] = []
+  for (let i = 1; i <= 4; i++) {
+    const v = s[`kpi${i}v`], k = s[`kpi${i}k`]
+    if (v && k) kpis.push([v, k])
+  }
+  return (
+    <aside className="ait-explain a d2">
+      {s.kicker && <span className="ait-explain-kicker">{s.kicker}</span>}
+      {s.title && <h3 className="ait-explain-title">{s.title}</h3>}
+      {s.body && <p className="ait-explain-body">{s.body}</p>}
+      {kpis.length > 0 && (
+        <div className="ait-explain-kpis">
+          {kpis.map(([v, k]) => (
+            <div key={k} className="ait-explain-kpi">
+              <span className="ait-explain-kpi-v">{v}</span>
+              <span className="ait-explain-kpi-k">{k}</span>
+            </div>
+          ))}
+        </div>
+      )}
+    </aside>
+  )
+}
+
 /* ═══════════════════════════════════════════════════════════════════
    CHROME — canonical components rendered inside SlideEngine context
    ═══════════════════════════════════════════════════════════════════ */
@@ -303,7 +331,7 @@ function SlideOpening({ lang }: { lang: LangId }) {
    SLIDE 1 — Login SSO
    ═══════════════════════════════════════════════════════════════════ */
 
-function SlideLogin() {
+function SlideLogin({ lang }: { lang: LangId }) {
   return (
     <Slide index={1}>
       <SceneFrame urlIndex={0}>
@@ -340,6 +368,7 @@ function SlideLogin() {
           </div>
         </article>
       </SceneFrame>
+      <ExplainAside slideKey="s1" lang={lang} />
     </Slide>
   )
 }
@@ -348,7 +377,7 @@ function SlideLogin() {
    SLIDE 2 — Dashboard 8 areas
    ═══════════════════════════════════════════════════════════════════ */
 
-function SlideDashboard() {
+function SlideDashboard({ lang }: { lang: LangId }) {
   const [selected, setSelected] = useState<StudentCardId>('ia')
   const card = STUDENT_CARDS.find((c) => c.id === selected) ?? STUDENT_CARDS[0]
   const detail = STUDENT_CARD_DETAILS[selected]
@@ -426,6 +455,7 @@ function SlideDashboard() {
           </div>
         </article>
       </SceneFrame>
+      <ExplainAside slideKey="s2" lang={lang} />
     </Slide>
   )
 }
@@ -434,7 +464,7 @@ function SlideDashboard() {
    SLIDE 3 — Storytelling voice
    ═══════════════════════════════════════════════════════════════════ */
 
-function SlideStory() {
+function SlideStory({ lang }: { lang: LangId }) {
   return (
     <Slide index={3}>
       <SceneFrame urlIndex={2}>
@@ -485,6 +515,7 @@ function SlideStory() {
           </div>
         </article>
       </SceneFrame>
+      <ExplainAside slideKey="s3" lang={lang} />
     </Slide>
   )
 }
@@ -493,7 +524,7 @@ function SlideStory() {
    SLIDE 4 — Script generation
    ═══════════════════════════════════════════════════════════════════ */
 
-function SlideScript() {
+function SlideScript({ lang }: { lang: LangId }) {
   return (
     <Slide index={4}>
       <SceneFrame urlIndex={3}>
@@ -529,6 +560,7 @@ function SlideScript() {
           </div>
         </article>
       </SceneFrame>
+      <ExplainAside slideKey="s4" lang={lang} />
     </Slide>
   )
 }
@@ -537,7 +569,7 @@ function SlideScript() {
    SLIDE 5 — Prompt generation
    ═══════════════════════════════════════════════════════════════════ */
 
-function SlidePrompt() {
+function SlidePrompt({ lang }: { lang: LangId }) {
   return (
     <Slide index={5}>
       <SceneFrame urlIndex={4}>
@@ -565,6 +597,7 @@ function SlidePrompt() {
           </div>
         </article>
       </SceneFrame>
+      <ExplainAside slideKey="s5" lang={lang} />
     </Slide>
   )
 }
@@ -573,7 +606,7 @@ function SlidePrompt() {
    SLIDE 6 — Simulation live
    ═══════════════════════════════════════════════════════════════════ */
 
-function SlideSimulation() {
+function SlideSimulation({ lang }: { lang: LangId }) {
   return (
     <Slide index={6}>
       <SceneFrame urlIndex={5}>
@@ -630,6 +663,7 @@ function SlideSimulation() {
           </div>
         </article>
       </SceneFrame>
+      <ExplainAside slideKey="s6" lang={lang} />
     </Slide>
   )
 }
@@ -638,7 +672,7 @@ function SlideSimulation() {
    SLIDE 7 — Tool Builder
    ═══════════════════════════════════════════════════════════════════ */
 
-function SlideToolBuilder() {
+function SlideToolBuilder({ lang }: { lang: LangId }) {
   return (
     <Slide index={7}>
       <SceneFrame urlIndex={6}>
@@ -697,6 +731,7 @@ function SlideToolBuilder() {
           </div>
         </article>
       </SceneFrame>
+      <ExplainAside slideKey="s7" lang={lang} />
     </Slide>
   )
 }
@@ -705,7 +740,7 @@ function SlideToolBuilder() {
    SLIDE 8 — Karaoke + depth
    ═══════════════════════════════════════════════════════════════════ */
 
-function SlideKaraoke() {
+function SlideKaraoke({ lang }: { lang: LangId }) {
   return (
     <Slide index={8}>
       <SceneFrame urlIndex={7}>
@@ -750,6 +785,7 @@ function SlideKaraoke() {
           </div>
         </article>
       </SceneFrame>
+      <ExplainAside slideKey="s8" lang={lang} />
     </Slide>
   )
 }
@@ -758,7 +794,7 @@ function SlideKaraoke() {
    SLIDE 9 — Exercise Python
    ═══════════════════════════════════════════════════════════════════ */
 
-function SlideExercise() {
+function SlideExercise({ lang }: { lang: LangId }) {
   return (
     <Slide index={9}>
       <SceneFrame urlIndex={8}>
@@ -797,6 +833,7 @@ function SlideExercise() {
           </div>
         </article>
       </SceneFrame>
+      <ExplainAside slideKey="s9" lang={lang} />
     </Slide>
   )
 }
@@ -805,7 +842,7 @@ function SlideExercise() {
    SLIDE 10 — Published app
    ═══════════════════════════════════════════════════════════════════ */
 
-function SlidePublished() {
+function SlidePublished({ lang }: { lang: LangId }) {
   return (
     <Slide index={10}>
       <SceneFrame urlIndex={9}>
@@ -860,6 +897,7 @@ function SlidePublished() {
           </div>
         </article>
       </SceneFrame>
+      <ExplainAside slideKey="s10" lang={lang} />
     </Slide>
   )
 }
@@ -868,7 +906,7 @@ function SlidePublished() {
    SLIDE 11 — RH Dashboard
    ═══════════════════════════════════════════════════════════════════ */
 
-function SlideRH() {
+function SlideRH({ lang }: { lang: LangId }) {
   return (
     <Slide index={11}>
       <SceneFrame urlIndex={10}>
@@ -920,6 +958,7 @@ function SlideRH() {
           </div>
         </article>
       </SceneFrame>
+      <ExplainAside slideKey="s11" lang={lang} />
     </Slide>
   )
 }
@@ -960,17 +999,17 @@ export default function ShowcasePage() {
         <Chrome lang={lang} setLang={setLang} />
 
         <SlideOpening lang={lang} />
-        <SlideLogin />
-        <SlideDashboard />
-        <SlideStory />
-        <SlideScript />
-        <SlidePrompt />
-        <SlideSimulation />
-        <SlideToolBuilder />
-        <SlideKaraoke />
-        <SlideExercise />
-        <SlidePublished />
-        <SlideRH />
+        <SlideLogin lang={lang} />
+        <SlideDashboard lang={lang} />
+        <SlideStory lang={lang} />
+        <SlideScript lang={lang} />
+        <SlidePrompt lang={lang} />
+        <SlideSimulation lang={lang} />
+        <SlideToolBuilder lang={lang} />
+        <SlideKaraoke lang={lang} />
+        <SlideExercise lang={lang} />
+        <SlidePublished lang={lang} />
+        <SlideRH lang={lang} />
         <SlideClosing lang={lang} />
       </SlideEngine>
       <PdfDocument lang={lang} />
