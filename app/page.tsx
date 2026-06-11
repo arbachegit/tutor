@@ -74,6 +74,17 @@ function R({ parts }: { parts: Rich[] }) {
   )
 }
 
+/** Inline CSS vars + animation for monospace typewriter (.tw class) */
+function twStyle(text: string, delay: number, speed = 0.04): CSSProperties {
+  const n = text.length
+  const dur = Math.max(0.3, n * speed)
+  return {
+    '--tw-ch': `${n}ch`,
+    animation: `aitType ${dur.toFixed(2)}s steps(${n}, end) ${delay.toFixed(2)}s both, aitTwCursor 0.53s step-end ${delay.toFixed(2)}s infinite`,
+    animationPlayState: 'paused',
+  } as CSSProperties
+}
+
 function Topbar({ role, name, pillText, pillKind }: {
   role: 'student' | 'corp'; name: string; pillText: string
   pillKind: 'cy' | 'or' | 'gn' | 'pr'
@@ -263,18 +274,10 @@ function SlideOpening({ lang }: { lang: LangId }) {
         </div>
         <h1 className="ait-op-wordmark a d2">ai.tutor</h1>
         <div className="ait-op-quotes a d3" aria-hidden="true">
-          <p className="ait-op-q ait-op-q--1">
-            <span className="tw">{s.q1}</span>
-          </p>
-          <p className="ait-op-q ait-op-q--2">
-            <span className="tw">{s.q2}</span>
-          </p>
-          <p className="ait-op-q ait-op-q--3">
-            <span className="tw">{s.q3}</span>
-          </p>
-          <p className="ait-op-q ait-op-q--4">
-            <span className="tw">{s.q4}</span>
-          </p>
+          <p className="ait-op-q ait-op-q--1">{s.q1}</p>
+          <p className="ait-op-q ait-op-q--2">{s.q2}</p>
+          <p className="ait-op-q ait-op-q--3">{s.q3}</p>
+          <p className="ait-op-q ait-op-q--4">{s.q4}</p>
         </div>
         <div className="ait-op-closer a d7" aria-hidden="true">
           <p>
@@ -461,7 +464,7 @@ function SlideStory({ lang }: { lang: LangId }) {
                 {sc.transcript.map((seg, i) => (
                   <Fragment key={i}>
                     {i > 0 && ' '}
-                    <span className={`st w${i + 1}${seg.em ? ' st--em' : ''}`}>{seg.t}</span>
+                    <span className={`st${seg.em ? ' st--em' : ''}`} style={{ '--tw-d': `${0.3 + i * 0.15}s` } as CSSProperties}>{seg.t}</span>
                   </Fragment>
                 ))}
                 ...<span className="st-cursor" />
@@ -505,14 +508,22 @@ function SlideScript({ lang }: { lang: LangId }) {
               </div>
               <div className="ait-script-doc">
                 {sc.lines.map((line, i) => (
-                  <div key={line.k} className={`ait-script-line${line.ok ? ' ait-script-line--ok' : ''} d${i + 2}`}>
+                  <div key={line.k} className={`ait-script-line${line.ok ? ' ait-script-line--ok' : ''} tw-line`}
+                    style={{ '--tw-d': `${0.4 + i * 0.5}s` } as CSSProperties}>
                     <span className="sk">{line.k}</span>
                     {line.flow ? (
                       <span className="sv">
-                        {line.flow.map((step) => <span key={step} className="sf">{step}</span>)}
+                        {line.flow.map((step, j) => <span key={step} className="sf tw-line" style={{ '--tw-d': `${0.6 + i * 0.5 + j * 0.25}s` } as CSSProperties}>{step}</span>)}
                       </span>
                     ) : (
-                      <span className="sv">{line.v}{line.ok && <> <span className="sok">✓</span></>}</span>
+                      <span className="sv">
+                        <span className="tw" style={twStyle(
+                          (line.v || '') + (line.ok ? ' ✓' : ''),
+                          0.6 + i * 0.5
+                        )}>
+                          {line.v}{line.ok && <> <span className="sok">✓</span></>}
+                        </span>
+                      </span>
                     )}
                   </div>
                 ))}
@@ -550,11 +561,13 @@ function SlidePrompt({ lang }: { lang: LangId }) {
               </div>
             </div>
             <div className="ait-prompt-doc d2">
-              {sc.paragraphs.map((p) => (
-                <p key={p.tag} className={`pp${p.ok ? ' pp--ok' : ''}`}>
+              {sc.paragraphs.map((p, i) => (
+                <p key={p.tag} className={`pp${p.ok ? ' pp--ok' : ''} tw-line`}
+                  style={{ '--tw-d': `${0.5 + i * 0.45}s` } as CSSProperties}>
                   <span className="pp-tag">{p.tag}</span> <R parts={p.parts} />
                 </p>
               ))}
+              <span className="ait-cursor tw-line" style={{ '--tw-d': `${0.5 + sc.paragraphs.length * 0.45}s` } as CSSProperties} />
             </div>
           </div>
         </article>
@@ -585,9 +598,13 @@ function SlideSimulation({ lang }: { lang: LangId }) {
               </div>
               <div className="ait-sim2-msgs">
                 {sc.msgs.map((m, i) => (
-                  <div key={i} className={`ait-sim2-msg ait-sim2-msg--${m.agent ? 'agent' : 'lead'} d${i + 2}`}>
+                  <div key={i} className={`ait-sim2-msg ait-sim2-msg--${m.agent ? 'agent' : 'lead'} tw-line`}
+                    style={{ '--tw-d': `${0.3 + i * 1.0}s` } as CSSProperties}>
                     <span className="ait-sim2-msg-who">{m.agent ? sc.whoAgent : sc.whoLead}</span>
-                    <span className="ait-sim2-msg-body"><R parts={m.parts} /></span>
+                    <span className="ait-sim2-msg-body">
+                      <R parts={m.parts} />
+                      {i === sc.msgs.length - 1 && <span className="ait-cursor" />}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -760,7 +777,9 @@ function SlideExercise({ lang }: { lang: LangId }) {
               <div className="ait-ex-q">
                 <R parts={sc.question} />
               </div>
-              <div className="ait-ex-input">{sc.answer}<span className="ait-cursor" /></div>
+              <div className="ait-ex-input">
+                <span className="tw" style={twStyle(sc.answer, 0.5, 0.15)}>{sc.answer}</span>
+              </div>
               <div className="ait-ex-actions">
                 <button className="ait-ex-btn ait-ex-btn--primary" type="button">{sc.btnCheck}</button>
                 <button className="ait-ex-btn ait-ex-btn--ghost" type="button">{sc.btnEasier}</button>
@@ -768,14 +787,14 @@ function SlideExercise({ lang }: { lang: LangId }) {
             </div>
             <div className="ait-ex-result d2">
               <div className="ait-ex-console">
-                <span className="ait-ex-console-h"><span className="ait-ex-console-dot" /> python · grader.py</span>
-                <span className="ait-ex-console-l ait-ex-console-l--p">&gt;&gt;&gt; grade(answer=9)</span>
-                <span className="ait-ex-console-l">Running tests...</span>
-                <span className="ait-ex-console-l">expected = 2 + 3 + 3 + 1 = 9</span>
-                <span className="ait-ex-console-l">Test 1: ✓ signature OK</span>
-                <span className="ait-ex-console-l">Test 2: ✓ numeric match</span>
-                <span className="ait-ex-console-l">Test 3: ✓ bounds (0–10)</span>
-                <span className="ait-ex-console-l ait-ex-console-l--ok">PASS · |error|=0 · 12ms</span>
+                <span className="ait-ex-console-h tw-line" style={{ '--tw-d': '1.0s' } as CSSProperties}><span className="ait-ex-console-dot" /> python · grader.py</span>
+                <span className="ait-ex-console-l ait-ex-console-l--p tw-line" style={{ '--tw-d': '1.3s' } as CSSProperties}>&gt;&gt;&gt; grade(answer=9)</span>
+                <span className="ait-ex-console-l tw-line" style={{ '--tw-d': '1.6s' } as CSSProperties}>Running tests...</span>
+                <span className="ait-ex-console-l tw-line" style={{ '--tw-d': '1.9s' } as CSSProperties}>expected = 2 + 3 + 3 + 1 = 9</span>
+                <span className="ait-ex-console-l tw-line" style={{ '--tw-d': '2.2s' } as CSSProperties}>Test 1: ✓ signature OK</span>
+                <span className="ait-ex-console-l tw-line" style={{ '--tw-d': '2.5s' } as CSSProperties}>Test 2: ✓ numeric match</span>
+                <span className="ait-ex-console-l tw-line" style={{ '--tw-d': '2.8s' } as CSSProperties}>Test 3: ✓ bounds (0–10)</span>
+                <span className="ait-ex-console-l ait-ex-console-l--ok tw-line" style={{ '--tw-d': '3.1s' } as CSSProperties}>PASS · |error|=0 · 12ms</span>
               </div>
               <div className="ait-ex-result-h">
                 <span className="ait-ex-result-check" aria-hidden="true">✓</span>

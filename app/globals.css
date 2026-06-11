@@ -1001,9 +1001,12 @@ body::after {
 .ait-story-h-k { font-family: var(--ait-mono); font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ait-pr); }
 .ait-story-h-tag { font-family: var(--ait-mono); font-size: 12px; color: var(--ait-t2); }
 .ait-story-transcript { flex: 1; font-family: var(--ait-serif); font-style: italic; font-size: clamp(18px, 1.8vw, 24px); line-height: 1.5; color: var(--ait-t1); letter-spacing: -0.005em; position: relative; min-width: 0; }
-.ait-story-transcript .st { display: inline; }
+.ait-story-transcript .st { display: inline; opacity: 0; transition: opacity 0.3s ease var(--tw-d, 0s); }
+.slide[data-active="true"] .ait-story-transcript .st,
+.slide[data-seen="true"] .ait-story-transcript .st { opacity: 1; }
 .ait-story-transcript .st--em { color: var(--ait-pr); font-weight: 700; }
-.st-cursor { display: inline-block; width: 8px; height: 22px; background: var(--ait-pr); margin-left: 4px; vertical-align: middle; animation: aitCursorBlink 0.5s steps(2) infinite; }
+.st-cursor { display: inline-block; width: 8px; height: 22px; background: var(--ait-pr); margin-left: 4px; vertical-align: middle; animation: aitCursorBlink 0.5s steps(2) infinite; opacity: 0; transition: opacity 0.2s ease 2.5s; }
+.slide[data-active="true"] .st-cursor { opacity: 1; }
 .ait-story-chips { display: flex; gap: 8px; flex-wrap: wrap; padding-top: 8px; border-top: 1px dashed rgba(168,85,247,0.18); }
 .ait-story-chip { font-family: var(--ait-mono); font-size: 12px; padding: 4px 10px; border-radius: 12px; background: rgba(168,85,247,0.10); border: 1px solid rgba(168,85,247,0.25); color: var(--ait-pr); }
 
@@ -1262,6 +1265,45 @@ body::after {
   transition: color 0.25s ease;
 }
 .ait-closing-pdf:hover { color: var(--cyan); }
+
+/* ── Typewriter core ── */
+@keyframes aitType { from { width: 0 } to { width: var(--tw-ch) } }
+@keyframes aitTwCursor { 0%, 49% { border-right-color: currentColor } 50%, 100% { border-right-color: transparent } }
+
+.tw {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 0;
+  border-right: 2px solid transparent;
+  vertical-align: bottom;
+}
+
+.slide[data-active="true"] .tw {
+  animation-play-state: running !important;
+}
+
+.slide[data-seen="true"]:not([data-active="true"]) .tw {
+  width: var(--tw-ch) !important;
+  border-right-color: transparent !important;
+  animation: none !important;
+}
+
+/* ── Typewriter line-reveal (paragraphs, chat messages, console lines) ── */
+.tw-line {
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.45s ease var(--tw-d, 0s), transform 0.45s ease var(--tw-d, 0s);
+}
+.slide[data-active="true"] .tw-line,
+.slide[data-seen="true"] .tw-line {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Cursor in chat/prompt contexts — only visible when slide is active */
+.tw-line .ait-cursor { opacity: 0; transition: opacity 0.2s ease; }
+.slide[data-active="true"] .tw-line .ait-cursor { opacity: 1; }
 
 /* ═══════════════════════════════════════════════════════
    RESPONSIVE
