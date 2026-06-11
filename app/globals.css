@@ -693,16 +693,38 @@ body::after {
   color: transparent;
 }
 
-/* Opening quotes: stagger via slide-based animation */
-.slide[data-active="true"] .ait-op-q--1 { animation: aitOpQShow 20s linear forwards; animation-delay: 0.5s; }
-.slide[data-active="true"] .ait-op-q--2 { animation: aitOpQShow 20s linear forwards; animation-delay: 5s; }
-.slide[data-active="true"] .ait-op-q--3 { animation: aitOpQShow 20s linear forwards; animation-delay: 9.5s; }
-.slide[data-active="true"] .ait-op-q--4 { animation: aitOpQShow 20s linear forwards; animation-delay: 14s; }
+/* Opening quotes: 4 phrases loop infinitely in a 20s cycle */
+.slide[data-active="true"] .ait-op-q--1 { animation: aitQ1 20s linear infinite; }
+.slide[data-active="true"] .ait-op-q--2 { animation: aitQ2 20s linear infinite; }
+.slide[data-active="true"] .ait-op-q--3 { animation: aitQ3 20s linear infinite; }
+.slide[data-active="true"] .ait-op-q--4 { animation: aitQ4 20s linear infinite; }
 
-@keyframes aitOpQShow {
-  0%, 1% { opacity: 0; transform: translateY(10px); }
-  4%, 22% { opacity: 1; transform: translateY(0); }
-  25%, 100% { opacity: 0; transform: translateY(-10px); }
+@keyframes aitQ1 {
+  0%          { opacity: 0; transform: translateY(10px); }
+  3%          { opacity: 1; transform: translateY(0); }
+  22%         { opacity: 1; transform: translateY(0); }
+  25%         { opacity: 0; transform: translateY(-10px); }
+  25.1%, 100% { opacity: 0; }
+}
+@keyframes aitQ2 {
+  0%, 25%     { opacity: 0; }
+  28%         { opacity: 1; transform: translateY(0); }
+  47%         { opacity: 1; transform: translateY(0); }
+  50%         { opacity: 0; transform: translateY(-10px); }
+  50.1%, 100% { opacity: 0; }
+}
+@keyframes aitQ3 {
+  0%, 50%     { opacity: 0; }
+  53%         { opacity: 1; transform: translateY(0); }
+  72%         { opacity: 1; transform: translateY(0); }
+  75%         { opacity: 0; transform: translateY(-10px); }
+  75.1%, 100% { opacity: 0; }
+}
+@keyframes aitQ4 {
+  0%, 75%     { opacity: 0; }
+  78%         { opacity: 1; transform: translateY(0); }
+  97%         { opacity: 1; transform: translateY(0); }
+  100%        { opacity: 0; transform: translateY(-10px); }
 }
 
 .ait-op-closer {
