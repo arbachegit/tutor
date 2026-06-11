@@ -737,8 +737,8 @@ body::after {
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: clamp(16px, 3vh, 32px);
+  justify-content: space-between;
+  gap: clamp(12px, 2vh, 24px);
   padding: 20px 22px;
 }
 .ait-explain-kicker { font-family: var(--font-mono); font-size: clamp(0.72rem, 1.1vw, 0.9rem); font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--cyan); }
@@ -749,7 +749,7 @@ body::after {
 .ait-explain-kpi-v { font-family: var(--font-display); font-size: clamp(2rem, 3.6vw, 3.2rem); font-weight: 800; line-height: 1; color: var(--white); font-variant-numeric: tabular-nums; }
 .ait-explain-kpi-k { font-family: var(--font-mono); font-size: clamp(0.6rem, 0.85vw, 0.75rem); letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); }
 .ait-explain-rule { width: 36px; height: 1px; background: linear-gradient(90deg, var(--cyan), transparent); opacity: 0.35; }
-.ait-explain-idx { font-family: var(--font-mono); font-size: clamp(2.8rem, 5vw, 4.2rem); font-weight: 800; line-height: 1; color: rgba(255,255,255,0.06); letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
+.ait-explain-idx { font-family: var(--font-mono); font-size: clamp(2.8rem, 5vw, 4.2rem); font-weight: 800; line-height: 1; color: rgba(255,255,255,0.18); letter-spacing: -0.04em; font-variant-numeric: tabular-nums; margin-top: auto; }
 
 .ait-chrome {
   position: relative;
