@@ -825,7 +825,7 @@ export const SCENES: Record<LangId, SceneStrings> = {
       topName: 'ai.tutor · Single Sign-On',
       pill: 'learn.iconsai.ai',
       title: 'Sign in to the ecosystem',
-      idLabel: 'Tax ID',
+      idLabel: 'SSN',
       idValue: '123-45-6789',
       smsLabel: 'SMS code',
       btn: 'Sign in via Identity Hub',
