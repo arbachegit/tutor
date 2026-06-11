@@ -1301,9 +1301,23 @@ body::after {
   transform: translateY(0);
 }
 
-/* Cursor in chat/prompt contexts — only visible when slide is active */
+/* Cursor in prompt context — only visible when slide is active */
 .tw-line .ait-cursor { opacity: 0; transition: opacity 0.2s ease; }
 .slide[data-active="true"] .tw-line .ait-cursor { opacity: 1; }
+
+/* Per-message cursor for chat simulation (S6) — timed to each message's reveal */
+@keyframes aitCursorVanish { to { visibility: hidden } }
+.sim-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: currentColor;
+  margin-left: 3px;
+  vertical-align: text-bottom;
+  opacity: 0;
+}
+.slide[data-active="true"] .sim-cursor { animation-play-state: running !important; }
+.slide[data-seen="true"]:not([data-active="true"]) .sim-cursor { animation: none !important; }
 
 /* ═══════════════════════════════════════════════════════
    RESPONSIVE

@@ -597,16 +597,25 @@ function SlideSimulation({ lang }: { lang: LangId }) {
                 <span className="ait-sim2-chat-h-score">{sc.scoreK} <span className="ait-sim2-score">{sc.scoreV}</span> / 10</span>
               </div>
               <div className="ait-sim2-msgs">
-                {sc.msgs.map((m, i) => (
-                  <div key={i} className={`ait-sim2-msg ait-sim2-msg--${m.agent ? 'agent' : 'lead'} tw-line`}
-                    style={{ '--tw-d': `${0.3 + i * 1.0}s` } as CSSProperties}>
-                    <span className="ait-sim2-msg-who">{m.agent ? sc.whoAgent : sc.whoLead}</span>
-                    <span className="ait-sim2-msg-body">
-                      <R parts={m.parts} />
-                      {i === sc.msgs.length - 1 && <span className="ait-cursor" />}
-                    </span>
-                  </div>
-                ))}
+                {sc.msgs.map((m, i) => {
+                  const isLast = i === sc.msgs.length - 1
+                  const d = 0.3 + i * 1.0
+                  return (
+                    <div key={i} className={`ait-sim2-msg ait-sim2-msg--${m.agent ? 'agent' : 'lead'} tw-line`}
+                      style={{ '--tw-d': `${d}s` } as CSSProperties}>
+                      <span className="ait-sim2-msg-who">{m.agent ? sc.whoAgent : sc.whoLead}</span>
+                      <span className="ait-sim2-msg-body">
+                        <R parts={m.parts} />
+                        <span className="sim-cursor" style={{
+                          animation: isLast
+                            ? `aitCursorBlink 0.7s steps(2) ${d.toFixed(2)}s infinite`
+                            : `aitCursorBlink 0.7s steps(2) ${d.toFixed(2)}s infinite, aitCursorVanish 0.01s linear ${(d + 1.0).toFixed(2)}s forwards`,
+                          animationPlayState: 'paused',
+                        } as CSSProperties} />
+                      </span>
+                    </div>
+                  )
+                })}
               </div>
             </div>
             <div className="ait-sim2-side d6">
