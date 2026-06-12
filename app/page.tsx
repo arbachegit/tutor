@@ -351,7 +351,7 @@ function SlideDashboard({ lang }: { lang: LangId }) {
   useEffect(() => {
     if (wasSeen && !isActive) { setRevealed(true); return }
     if (!isActive) { setRevealed(false); return }
-    const timer = setTimeout(() => setRevealed(true), 3800)
+    const timer = setTimeout(() => setRevealed(true), 8000)
     return () => clearTimeout(timer)
   }, [isActive, wasSeen])
 
@@ -395,31 +395,39 @@ function SlideDashboard({ lang }: { lang: LangId }) {
                 </div>
               ) : (
                 <>
-                  <div className="ait-track-preview-head tw-line" style={{ '--tw-d': '0s' } as CSSProperties}>
-                    <span className="ait-track-preview-kicker">{detail.stage}</span>
-                    <span className="ait-track-preview-owner">{detail.owner}</span>
+                  <div className="ait-track-preview-head">
+                    <span className="ait-track-preview-kicker">
+                      <span className="tw-prop" style={{ '--tw-d': '0s', '--tw-dur': '1s' } as CSSProperties}>{detail.stage}</span>
+                    </span>
+                    <span className="ait-track-preview-owner">
+                      <span className="tw-prop" style={{ '--tw-d': '0s', '--tw-dur': '0.5s' } as CSSProperties}>{detail.owner}</span>
+                    </span>
                   </div>
-                  <div className="ait-track-preview-title tw-line" style={{ '--tw-d': '0.3s' } as CSSProperties}>
-                    {sc.cards['ia'].title}
+                  <div className="ait-track-preview-title">
+                    <span className="tw-prop" style={{ '--tw-d': '0.8s', '--tw-dur': '0.8s' } as CSSProperties}>{sc.cards['ia'].title}</span>
                   </div>
-                  <p className="ait-track-preview-copy tw-line" style={{ '--tw-d': '0.5s' } as CSSProperties}>
-                    {detail.headline}
+                  <p className="ait-track-preview-copy">
+                    <span className="tw-prop" style={{ '--tw-d': '1.4s', '--tw-dur': '1.6s' } as CSSProperties}>{detail.headline}</span>
                   </p>
-                  <div className="ait-track-preview-stats tw-line" style={{ '--tw-d': '1.0s' } as CSSProperties}>
+                  <div className="ait-track-preview-stats tw-line" style={{ '--tw-d': '2.2s' } as CSSProperties}>
                     {detail.metrics.map(([label, value]) => (
                       <div key={label} className="ait-track-stat">
                         <span>{label}</span><strong>{value}</strong>
                       </div>
                     ))}
                   </div>
-                  <div className="ait-track-preview-block tw-line" style={{ '--tw-d': '1.4s' } as CSSProperties}>
-                    <div className="ait-track-preview-label">{sc.outputsLabel}</div>
+                  <div className="ait-track-preview-block tw-line" style={{ '--tw-d': '2.8s' } as CSSProperties}>
+                    <div className="ait-track-preview-label">
+                      <span className="tw-prop" style={{ '--tw-d': '2.8s', '--tw-dur': '0.6s' } as CSSProperties}>{sc.outputsLabel}</span>
+                    </div>
                     <div className="ait-track-preview-chips">
                       {detail.outputs.map((item) => <span key={item} className="ait-track-chip">{item}</span>)}
                     </div>
                   </div>
-                  <div className="ait-track-preview-block tw-line" style={{ '--tw-d': '1.8s' } as CSSProperties}>
-                    <div className="ait-track-preview-label">{sc.flowLabel}</div>
+                  <div className="ait-track-preview-block tw-line" style={{ '--tw-d': '3.4s' } as CSSProperties}>
+                    <div className="ait-track-preview-label">
+                      <span className="tw-prop" style={{ '--tw-d': '3.4s', '--tw-dur': '0.6s' } as CSSProperties}>{sc.flowLabel}</span>
+                    </div>
                     <div className="ait-track-flow">
                       {detail.flow.map((item, idx) => (
                         <div key={item} className="ait-track-flow-row">
@@ -429,7 +437,7 @@ function SlideDashboard({ lang }: { lang: LangId }) {
                       ))}
                     </div>
                   </div>
-                  <div className="ait-track-preview-foot tw-line" style={{ '--tw-d': '2.2s' } as CSSProperties}>
+                  <div className="ait-track-preview-foot tw-line" style={{ '--tw-d': '4.0s' } as CSSProperties}>
                     <span className="ait-track-preview-live-dot" />
                     {sc.foot}
                   </div>
