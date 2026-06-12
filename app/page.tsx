@@ -596,6 +596,12 @@ function SlideStory({ lang }: { lang: LangId }) {
 
 function SlideScript({ lang }: { lang: LangId }) {
   const sc = SCENES[lang].s4
+
+  /* ── JS-driven typewriter for the quote ── */
+  const totalQuoteChars = useMemo(() =>
+    sc.quote.reduce((sum, p) => sum + p.t.length, 0), [sc.quote])
+  const { count, typing } = useTypewriter(totalQuoteChars, 4, 800, 25)
+
   return (
     <Slide index={4}>
       <SceneFrame urlIndex={3}>
@@ -605,7 +611,8 @@ function SlideScript({ lang }: { lang: LangId }) {
             <div className="ait-script-left">
               <div className="ait-script-h"><span className="ait-script-h-k">{sc.storyLabel}</span></div>
               <div className="ait-script-quote">
-                <R parts={sc.quote} />
+                <RSliced parts={sc.quote} maxChars={count} />
+                {typing && <span className="tw-caret tw-caret--quote" />}
               </div>
             </div>
             <div className="ait-script-right">
