@@ -1,6 +1,6 @@
 'use client'
 
-import { Fragment, useEffect, useState, type CSSProperties, type ReactNode } from 'react'
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import Link from 'next/link'
 import { SlideEngine, useSlideContext } from '@/components/SlideEngine'
 import { Slide } from '@/components/Slide'
@@ -83,15 +83,59 @@ function twStyle(text: string, delay: number, speed = 0.04): CSSProperties {
   } as CSSProperties
 }
 
-/** Typewriter without blinking cursor — for segments that share a single cursor element */
-function twStyleNoCursor(text: string, delay: number, speed = 0.025): CSSProperties {
-  const n = text.length
-  const dur = Math.max(0.12, n * speed)
-  return {
-    '--tw-ch': `${n}ch`,
-    animation: `aitType ${dur.toFixed(2)}s steps(${n}, end) ${delay.toFixed(2)}s both`,
-    animationPlayState: 'paused',
-  } as CSSProperties
+/**
+ * JS-driven typewriter: advances a character counter when the slide is active.
+ * Returns `count` (chars revealed so far) and `typing` (cursor should blink).
+ * On revisit (seen && !active), jumps to totalChars instantly.
+ */
+function useTypewriter(totalChars: number, slideIndex: number, delay = 800, speed = 28) {
+  const { currentSlide, seenSlides } = useSlideContext()
+  const active = currentSlide === slideIndex
+  const seen = seenSlides.has(slideIndex)
+  const [count, setCount] = useState(0)
+  const [typing, setTyping] = useState(false)
+
+  useEffect(() => {
+    if (seen && !active) { setCount(totalChars); setTyping(false); return }
+    if (!active) { setCount(0); setTyping(false); return }
+    setCount(0); setTyping(false)
+    let cancelled = false
+    let i = 0
+    const start = setTimeout(() => {
+      if (cancelled) return
+      setTyping(true)
+      const tick = () => {
+        if (cancelled) return
+        i++
+        setCount(i)
+        if (i >= totalChars) { setTyping(false); return }
+        setTimeout(tick, speed)
+      }
+      tick()
+    }, delay)
+    return () => { cancelled = true; clearTimeout(start) }
+  }, [active, seen, totalChars, delay, speed])
+
+  return { count, typing, done: count >= totalChars && !typing }
+}
+
+/** Render Rich parts sliced to maxChars, returning elements + remaining count */
+function RSliced({ parts, maxChars }: { parts: Rich[]; maxChars: number }) {
+  let remaining = maxChars
+  return (
+    <>
+      {parts.map((p, i) => {
+        if (remaining <= 0) return null
+        const vis = p.t.slice(0, remaining)
+        remaining -= vis.length
+        return p.code ? <code key={i}>{vis}</code>
+          : p.strong ? <strong key={i}>{vis}</strong>
+          : p.em ? <em key={i}>{vis}</em>
+          : p.ok ? <span key={i} className="pok">{vis}</span>
+          : <span key={i}>{vis}</span>
+      })}
+    </>
+  )
 }
 
 function Topbar({ role, name, pillText, pillKind }: {
@@ -481,6 +525,19 @@ function SlideDashboard({ lang }: { lang: LangId }) {
 
 function SlideStory({ lang }: { lang: LangId }) {
   const sc = SCENES[lang].s3
+  const segments = useMemo(() => {
+    let offset = 0
+    return sc.transcript.map((seg, i) => {
+      const prefix = i > 0 ? ' ' : ''
+      const text = prefix + seg.t
+      const start = offset
+      offset += text.length
+      return { text, start, end: offset, em: seg.em }
+    })
+  }, [sc.transcript])
+  const totalChars = segments.length > 0 ? segments[segments.length - 1].end : 0
+  const { count, typing } = useTypewriter(totalChars, 3, 800, 30)
+
   return (
     <Slide index={3}>
       <SceneFrame urlIndex={2}>
@@ -511,20 +568,13 @@ function SlideStory({ lang }: { lang: LangId }) {
                 <span className="ait-story-h-tag">{sc.tag}</span>
               </div>
               <div className="ait-story-transcript">
-                {(() => {
-                  let d = 0.5
-                  return sc.transcript.map((seg, i) => {
-                    const text = (i > 0 ? ' ' : '') + seg.t
-                    const segD = d
-                    d += Math.max(0.12, text.length * 0.025) + 0.02
-                    return (
-                      <span key={i} className={`tw${seg.em ? ' st--em' : ''}`}
-                        style={twStyleNoCursor(text, segD)}>{text}</span>
-                    )
-                  })
-                })()}
-                <span className="st-ellipsis tw-line" style={{ '--tw-d': `${0.5 + sc.transcript.reduce((a, s, i) => a + Math.max(0.12, ((i > 0 ? 1 : 0) + s.t.length) * 0.025) + 0.02, 0)}s` } as CSSProperties}>...</span>
-                <span className="st-cursor" />
+                {segments.map((seg, i) => {
+                  if (count <= seg.start) return null
+                  const vis = seg.text.slice(0, count - seg.start)
+                  return <span key={i} className={seg.em ? 'st--em' : undefined}>{vis}</span>
+                })}
+                {typing && <span className="tw-caret" />}
+                {!typing && count >= totalChars && <span className="st-ellipsis">...</span>}
               </div>
               <div className="ait-story-chips d2">
                 {sc.chips.map((chip, i) => (
@@ -601,6 +651,21 @@ function SlideScript({ lang }: { lang: LangId }) {
 
 function SlidePrompt({ lang }: { lang: LangId }) {
   const sc = SCENES[lang].s5
+  const { paraOffsets, totalChars } = useMemo(() => {
+    let offset = 0
+    const offsets = sc.paragraphs.map(p => {
+      const paraStart = offset
+      const partOffsets = p.parts.map(part => {
+        const start = offset
+        offset += part.t.length
+        return { start, end: offset }
+      })
+      return { paraStart, partOffsets, paraEnd: offset }
+    })
+    return { paraOffsets: offsets, totalChars: offset }
+  }, [sc.paragraphs])
+  const { count, typing } = useTypewriter(totalChars, 5, 600, 18)
+
   return (
     <Slide index={5}>
       <SceneFrame urlIndex={4}>
@@ -619,30 +684,27 @@ function SlidePrompt({ lang }: { lang: LangId }) {
               </div>
             </div>
             <div className="ait-prompt-doc d2">
-              {(() => {
-                let d = 0.5
-                return sc.paragraphs.map((p, pi) => {
-                  const baseD = d
-                  d += 0.25
-                  return (
-                    <p key={p.tag} className={`pp${p.ok ? ' pp--ok' : ''} tw-line`}
-                      style={{ '--tw-d': `${baseD.toFixed(2)}s` } as CSSProperties}>
-                      <span className="pp-tag">{p.tag}</span>{' '}
-                      {p.parts.map((part, ri) => {
-                        const partD = d
-                        d += 0.15
-                        return (
-                          <span key={ri} className="tw-line"
-                            style={{ '--tw-d': `${partD.toFixed(2)}s` } as CSSProperties}>
-                            <R parts={[part]} />
-                          </span>
-                        )
-                      })}
-                    </p>
-                  )
-                })
-              })()}
-              <span className="ait-cursor tw-line" style={{ '--tw-d': `${0.5 + sc.paragraphs.reduce((a, p) => a + 0.25 + p.parts.length * 0.15, 0)}s` } as CSSProperties} />
+              {sc.paragraphs.map((p, pi) => {
+                const po = paraOffsets[pi]
+                if (count <= po.paraStart) return null
+                const isLastVisible = pi === sc.paragraphs.length - 1 || count <= paraOffsets[pi + 1].paraStart
+                return (
+                  <p key={p.tag} className={`pp${p.ok ? ' pp--ok' : ''}`}>
+                    <span className="pp-tag">{p.tag}</span>{' '}
+                    {p.parts.map((part, ri) => {
+                      const partO = po.partOffsets[ri]
+                      if (count <= partO.start) return null
+                      const vis = part.t.slice(0, count - partO.start)
+                      return part.code ? <code key={ri}>{vis}</code>
+                        : part.strong ? <strong key={ri}>{vis}</strong>
+                        : part.em ? <em key={ri}>{vis}</em>
+                        : part.ok ? <span key={ri} className="pok">{vis}</span>
+                        : <span key={ri}>{vis}</span>
+                    })}
+                    {isLastVisible && typing && <span className="tw-caret" />}
+                  </p>
+                )
+              })}
             </div>
           </div>
         </article>
