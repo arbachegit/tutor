@@ -942,7 +942,7 @@ body::after {
 
 /* Track preview sidebar */
 .ait-track-preview { background: var(--ait-bg); border: 1px solid var(--ait-brd); border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px; overflow-y: auto; min-height: 0; }
-.ait-track-preview-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.ait-track-preview-head { display: flex; align-items: center; justify-content: space-between; gap: 4px 8px; flex-wrap: wrap; }
 .ait-track-preview-kicker { font-family: var(--ait-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); }
 .ait-track-preview-owner { font-family: var(--ait-mono); font-size: 12px; color: var(--ait-t2); }
 .ait-track-preview-title { font-size: 15px; font-weight: 700; color: var(--ait-t1); }
