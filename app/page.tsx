@@ -722,6 +722,26 @@ function SlideSimulation({ lang }: { lang: LangId }) {
   const sc = SCENES[lang].s6
   const sliderV = ['--cy', '--pr', '--or']
   const sliderT = ['--a', '--b', '--c']
+
+  /* ── JS-driven typewriter for chat messages ── */
+  const MSG_GAP = 10 // virtual chars between messages (~180ms pause at 18ms/char)
+  const msgOffsets = useMemo(() => {
+    let offset = 0
+    return sc.msgs.map((m, i) => {
+      if (i > 0) offset += MSG_GAP
+      const start = offset
+      const len = m.parts.reduce((sum, p) => sum + p.t.length, 0)
+      offset += len
+      return { start, len }
+    })
+  }, [sc.msgs])
+
+  const totalChars = msgOffsets.length > 0
+    ? msgOffsets[msgOffsets.length - 1].start + msgOffsets[msgOffsets.length - 1].len
+    : 0
+
+  const { count, typing } = useTypewriter(totalChars, 6, 400, 18)
+
   return (
     <Slide index={6}>
       <SceneFrame urlIndex={5}>
@@ -735,20 +755,16 @@ function SlideSimulation({ lang }: { lang: LangId }) {
               </div>
               <div className="ait-sim2-msgs">
                 {sc.msgs.map((m, i) => {
-                  const isLast = i === sc.msgs.length - 1
-                  const d = 0.3 + i * 1.0
+                  const { start, len } = msgOffsets[i]
+                  const charsForMsg = count - start
+                  if (charsForMsg <= 0) return null
+                  const msgTyping = typing && charsForMsg < len
                   return (
-                    <div key={i} className={`ait-sim2-msg ait-sim2-msg--${m.agent ? 'agent' : 'lead'} tw-line`}
-                      style={{ '--tw-d': `${d}s` } as CSSProperties}>
+                    <div key={i} className={`ait-sim2-msg ait-sim2-msg--${m.agent ? 'agent' : 'lead'}`}>
                       <span className="ait-sim2-msg-who">{m.agent ? sc.whoAgent : sc.whoLead}</span>
                       <span className="ait-sim2-msg-body">
-                        <R parts={m.parts} />
-                        <span className="sim-cursor" style={{
-                          animation: isLast
-                            ? `aitCursorBlink 0.7s steps(2) ${d.toFixed(2)}s infinite`
-                            : `aitCursorBlink 0.7s steps(2) ${d.toFixed(2)}s infinite, aitCursorVanish 0.01s linear ${(d + 1.0).toFixed(2)}s forwards`,
-                          animationPlayState: 'paused',
-                        } as CSSProperties} />
+                        <RSliced parts={m.parts} maxChars={Math.min(charsForMsg, len)} />
+                        {msgTyping && <span className="tw-caret" />}
                       </span>
                     </div>
                   )
